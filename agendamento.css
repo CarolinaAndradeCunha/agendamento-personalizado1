@@ -9,104 +9,71 @@
 }
 
 body {
-  font-family: var(--fonte-principal);
-  background-color: var(--cor-principal);
+  font-family: Arial, sans-serif;
+  background-color: #fdfdfd;
   margin: 0;
   padding: 0;
-  color: var(--cor-texto);
 }
 
 .container {
-  max-width: 700px;
-  margin: 2rem auto;
-  background-color: var(--cor-branca);
+  max-width: 600px;
+  margin: 3rem auto;
+  background-color: #fff;
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 0 10px #ccc;
 }
 
-h2 {
+h1, h2 {
+  color: #333;
   text-align: center;
-  color: var(--cor-destaque);
-  margin-bottom: 1rem;
 }
 
 ul {
-  list-style-type: none;
-  padding: 0;
-  margin-bottom: 1rem;
+  padding-left: 1.2rem;
 }
 
-ul li {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--cor-borda);
-}
-
-label {
-  display: block;
-  margin-top: 1rem;
-  font-weight: bold;
-}
-
-/* Adiciona * para campos obrigatórios */
-label.required::after,
-legend.required::after {
-  content: " *";
-  color: var(--cor-destaque);
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 input[type="text"],
 input[type="email"],
 input[type="date"],
 select {
-  width: 100%;
-  padding: 0.6rem;
-  margin-top: 0.3rem;
-  border: 1px solid var(--cor-borda);
-  border-radius: 6px;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="date"]:focus,
-select:focus {
-  outline: none;
-  border-color: var(--cor-destaque);
-  box-shadow: 0 0 5px var(--cor-destaque);
-}
-
-input[type="radio"] {
-  margin-right: 0.5rem;
-}
-
-button,
 input[type="submit"] {
-  background-color: var(--cor-destaque);
-  color: var(--cor-branca);
-  padding: 0.7rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 1.5rem;
+  padding: 0.7rem;
+  background-color: #2e7d32;
+  color: #fff;
   font-weight: bold;
-  width: 100%;
-  transition: background-color 0.3s ease;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-button:hover,
 input[type="submit"]:hover {
-  background-color: #9b5170;
+  background-color: #1b5e20;
+}
+
+.required::after {
+  content: " *";
+  color: red;
 }
 
 #resultado {
-  background-color: var(--cor-secundaria);
-  padding: 1rem;
   margin-top: 2rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  line-height: 1.6;
+  padding: 1rem;
+  background-color: #e8f5e9;
+  border-left: 5px solid #66bb6a;
+  display: none;
 }
 
 @media (max-width: 600px) {
