@@ -5,15 +5,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("form-agendamento");
   const resultado = document.getElementById("resultado");
   const calendarioInput = document.getElementById("calendario");
+  const mensagemSucesso = document.getElementById("mensagem-sucesso");
 
-const servicosEscolhidos = JSON.parse(localStorage.getItem("servicos")) || [];
+  const servicosEscolhidos = JSON.parse(localStorage.getItem("servicos")) || [];
 
-if (servicosEscolhidos.length === 0) {
-  listaServicos.innerHTML = "<li>Nenhum serviço selecionado.</li>";
-  horarioSelect.innerHTML = `<option disabled selected>Selecione os serviços primeiro</option>`;
-  form.querySelector("input[type='submit']").disabled = true;
-  return;
-}
+  if (servicosEscolhidos.length === 0) {
+    listaServicos.innerHTML = "<li>Nenhum serviço selecionado.</li>";
+    horarioSelect.innerHTML = `<option disabled selected>Selecione os serviços primeiro</option>`;
+    form.querySelector("input[type='submit']").disabled = true;
+    return;
+  }
 
   let total = 0;
   let duracaoTotal = 0;
@@ -26,41 +27,33 @@ if (servicosEscolhidos.length === 0) {
   });
   totalSpan.textContent = `R$ ${total.toFixed(2)}`;
 
-  // Horário de funcionamento
-  const horarioInicio = 9 * 60; // 09:00
-  const horarioFim = 18 * 60;   // 18:00
-  const pausaInicio = 12 * 60;  // 12:00
-  const pausaFim = 13.5 * 60;   // 13:30
+  const horarioInicio = 9 * 60;
+  const horarioFim = 18 * 60;
+  const pausaInicio = 12 * 60;
+  const pausaFim = 13.5 * 60;
 
-  // Armazena agendamentos no localStorage
   const agendamentos = JSON.parse(localStorage.getItem("agendamentos")) || {};
 
-  // Converte "HH:MM" para minutos
   function paraMinutos(hora) {
     const [h, m] = hora.split(":").map(Number);
     return h * 60 + m;
   }
 
-  // Converte minutos para "HH:MM"
   function paraHora(min) {
     const h = Math.floor(min / 60).toString().padStart(2, '0');
     const m = (min % 60).toString().padStart(2, '0');
     return `${h}:${m}`;
   }
 
-  // Gera horários disponíveis para a data escolhida
   function gerarHorarios(data) {
     const ocupados = agendamentos[data] || [];
     horarioSelect.innerHTML = '';
 
     for (let t = horarioInicio; t + duracaoTotal <= horarioFim; t += 15) {
       const fimAtual = t + duracaoTotal;
-
-      // Verifica se ultrapassa horário de almoço
       const emHorarioDePausa = t < pausaFim && fimAtual > pausaInicio;
       if (emHorarioDePausa) continue;
 
-      // Verifica conflito com agendamentos existentes
       const conflito = ocupados.some(horarioExistente => {
         const inicioExistente = paraMinutos(horarioExistente);
         const fimExistente = inicioExistente + duracaoTotal;
@@ -87,13 +80,11 @@ if (servicosEscolhidos.length === 0) {
     }
   }
 
-  // Atualiza os horários ao mudar o dia
   calendarioInput.addEventListener("change", () => {
     const data = calendarioInput.value;
     if (data) gerarHorarios(data);
   });
 
-  // Ao enviar o formulário
   form.addEventListener("submit", e => {
     e.preventDefault();
 
@@ -109,7 +100,6 @@ if (servicosEscolhidos.length === 0) {
       return;
     }
 
-    // Salvar horário agendado
     if (!agendamentos[data]) {
       agendamentos[data] = [];
     }
@@ -136,10 +126,18 @@ if (servicosEscolhidos.length === 0) {
       <p><strong>Total:</strong> R$ ${total.toFixed(2)}</p>
     `;
 
+    // Exibe o aviso visual de sucesso
+    mensagemSucesso.style.display = "flex";
+
     form.reset();
     horarioSelect.innerHTML = "";
   });
 
-  // Gera horários inicialmente, se houver data marcada
   if (calendarioInput.value) gerarHorarios(calendarioInput.value);
 });
+
+// Função para fechar a mensagem visual
+function fecharMensagem() {
+  document.getElementById("mensagem-sucesso").style.display = "none";
+  location.reload();
+}
