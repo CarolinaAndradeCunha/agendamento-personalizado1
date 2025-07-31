@@ -1,0 +1,276 @@
+:root {
+  --cor-principal: #0077ff;
+  --fundo: #f9f9f9;
+  --texto: #222;
+  --cinza: #ccc;
+  --branco: #fff;
+  --font: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font);
+  background-color: var(--fundo);
+  color: var(--texto);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--branco);
+  border-bottom: 1px solid var(--cinza);
+}
+
+.logo-nome {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.foto-perfil {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.botoes-header {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* MAIN MOBILE */
+main {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+  flex: 1;
+}
+
+.servicos {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+}
+
+.servico-btn {
+  padding: 0.8rem;
+  background-color: var(--branco);
+  border: 1px solid var(--cinza);
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.3s;
+}
+
+.servico-btn:hover {
+  background-color: #eef5ff;
+}
+
+.agendamento {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Tornar lista de serviços sempre visível (mobile e desktop) */
+.servicos-selecionados {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex; /* Antes era none no mobile */
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.servicos-selecionados li {
+  background-color: #eee;
+  padding: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.servicos-selecionados li button {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.btn-agendar {
+  padding: 1rem;
+  background-color: var(--cor-principal);
+  color: var(--branco);
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-agendar:hover {
+  background-color: #005fcc;
+}
+
+.msg-erro {
+  display: none;
+  margin-top: 0.5rem;
+  color: #d93025; /* vermelho alerta */
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+/* DESKTOP */
+@media (min-width: 768px) {
+  main {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .servicos {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .agendamento {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+}
+
+.popup {
+  position: absolute;
+  background: var(--branco);
+  color: var(--texto);
+  border: 1px solid var(--cinza);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 10;
+  display: none;
+  max-width: 250px;
+  font-size: 0.9rem;
+}
+
+.popup a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: var(--cor-principal);
+  text-decoration: underline;
+}
+
+.popup.open {
+  display: block;
+}
+
+/* Posicionamento geral dos popups */
+#popup-instagram,
+#popup-whatsapp,
+#popup-expediente,
+#popup-endereco {
+  top: 70px; /* abaixo do header */
+  right: 1rem;
+}
+
+/* Ocultador genérico */
+.hidden {
+  display: none !important;
+}
+
+/* Página de subserviços (segunda etapa) */
+.subservico-card {
+  display: flex;
+  gap: 0.5rem;
+  background-color: var(--branco);
+  border: 1px solid var(--cinza);
+  border-radius: 6px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+  position: relative;
+}
+
+.subservico-card img {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.subservico-desc {
+  flex: 1;
+  cursor: pointer;
+}
+
+.subservico-desc strong {
+  display: block;
+  font-weight: 600;
+}
+
+/* Botão de voltar */
+.btn-voltar {
+  background: none;
+  border: none;
+  color: var(--cor-principal);
+  font-weight: bold;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: left;
+}
+
+/* Modal para imagem ampliada */
+#modal-imagem {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+#modal-imagem img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+  box-shadow: 0 0 20px #000;
+  cursor: pointer;
+}
