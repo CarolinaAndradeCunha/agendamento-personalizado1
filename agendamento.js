@@ -6,10 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultado = document.getElementById("resultado");
   const calendarioInput = document.getElementById("calendario");
 
-  const servicosEscolhidos = JSON.parse(localStorage.getItem("servicos")) || [
-    { nome: "Sobrancelha", preco: 20, duracao: 30 },
-    { nome: "Depilação", preco: 35, duracao: 60 }
-  ];
+const servicosEscolhidos = JSON.parse(localStorage.getItem("servicos")) || [];
+
+if (servicosEscolhidos.length === 0) {
+  listaServicos.innerHTML = "<li>Nenhum serviço selecionado.</li>";
+  horarioSelect.innerHTML = `<option disabled selected>Selecione os serviços primeiro</option>`;
+  form.querySelector("input[type='submit']").disabled = true;
+  return;
+}
 
   let total = 0;
   let duracaoTotal = 0;
