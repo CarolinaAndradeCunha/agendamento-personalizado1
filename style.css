@@ -1,10 +1,10 @@
 :root {
-  --cor-principal: #0077ff;
+  --cor-principal: #f8e1f4;
   --fundo: #f9f9f9;
   --texto: #222;
   --cinza: #ccc;
   --branco: #fff;
-  --font: 'Inter', sans-serif;
+  --fonte-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 * {
@@ -14,7 +14,7 @@
 }
 
 body {
-  font-family: var(--font);
+  font-family: var(--fonte-principal);
   background-color: var(--fundo);
   color: var(--texto);
   min-height: 100vh;
