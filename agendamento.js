@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const calendarioInput = document.getElementById("calendario");
   const mensagemSucesso = document.getElementById("mensagem-sucesso");
 
-  const servicosEscolhidos = JSON.parse(localStorage.getItem("servicos")) || [];
+  // Aqui está a mudança principal: usar a chave correta do localStorage
+  const servicosEscolhidos = JSON.parse(localStorage.getItem("servicosSelecionados")) || [];
 
   if (servicosEscolhidos.length === 0) {
     listaServicos.innerHTML = "<li>Nenhum serviço selecionado.</li>";
@@ -113,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     agendamentos[data].push(horario);
     localStorage.setItem("agendamentos", JSON.stringify(agendamentos));
-    localStorage.removeItem("servicos");
+    localStorage.removeItem("servicosSelecionados");
 
     resultado.style.display = "block";
     resultado.innerHTML = `
