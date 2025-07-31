@@ -1,0 +1,120 @@
+:root {
+  --cor-principal: #f8e1f4;
+  --cor-secundaria: #e4c1ec;
+  --cor-destaque: #c06c84;
+  --cor-texto: #333;
+  --cor-branca: #fff;
+  --cor-borda: #ddd;
+  --fonte-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  font-family: var(--fonte-principal);
+  background-color: var(--cor-principal);
+  margin: 0;
+  padding: 0;
+  color: var(--cor-texto);
+}
+
+.container {
+  max-width: 700px;
+  margin: 2rem auto;
+  background-color: var(--cor-branca);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  color: var(--cor-destaque);
+  margin-bottom: 1rem;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+ul li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+/* Adiciona * para campos obrigatórios */
+label.required::after,
+legend.required::after {
+  content: " *";
+  color: var(--cor-destaque);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.3rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--cor-destaque);
+  box-shadow: 0 0 5px var(--cor-destaque);
+}
+
+input[type="radio"] {
+  margin-right: 0.5rem;
+}
+
+button,
+input[type="submit"] {
+  background-color: var(--cor-destaque);
+  color: var(--cor-branca);
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  font-weight: bold;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+button:hover,
+input[type="submit"]:hover {
+  background-color: #9b5170;
+}
+
+#resultado {
+  background-color: var(--cor-secundaria);
+  padding: 1rem;
+  margin-top: 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+  }
+
+  input[type="submit"] {
+    font-size: 1rem;
+  }
+}
