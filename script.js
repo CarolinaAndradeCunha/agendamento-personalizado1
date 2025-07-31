@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const dadosServicos = {
     unha: [
       { nome: "Alongamento em gel", tempo: "1h", preco: 50, img: "assets/alongamentogel.jpg" },
-      { nome: "Esmaltação", tempo: "30min", preco: 25, img: "https://www.shutterstock.com/shutterstock/photos/2230327463/display_1500/stock-photo-female-hand-in-blue-knitted-sweater-with-beautiful-manicure-blue-glitter-nails-nail-care-concept-2230327463.jpg" },
+      { nome: "Esmaltação", tempo: "30min", preco: 25, img: "assets/esmaltacao.jpg" },
     ],
     cabelo: [
       { nome: "Corte feminino", tempo: "40min", preco: 40, img: "assets/corte.jpg" },
