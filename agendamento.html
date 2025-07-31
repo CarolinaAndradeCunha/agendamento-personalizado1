@@ -2,49 +2,32 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agendamento</title>
-  <link rel="stylesheet" href="agendamento.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Finalize seu agendamento</h1>
+  <main>
+    <h1>Agende seu horário</h1>
 
     <section>
-      <h2>Serviços escolhidos</h2>
-      <ul id="lista-servicos"></ul>
-      <p><strong>Total: </strong><span id="total"></span></p>
+      <h2>Serviços</h2>
+      <form id="agendamento-form">
+        <label><input type="checkbox" name="servico" value="Sobrancelha" data-duracao="40"> Sobrancelha (40 min)</label><br>
+        <label><input type="checkbox" name="servico" value="Depilação" data-duracao="30"> Depilação (30 min)</label><br>
+        <label><input type="checkbox" name="servico" value="Design de Unhas" data-duracao="60"> Design de Unhas (60 min)</label><br>
+        <label><input type="checkbox" name="servico" value="Hidratação" data-duracao="20"> Hidratação (20 min)</label><br><br>
+
+        <h2>Escolha a data</h2>
+        <input type="date" id="data" required><br><br>
+
+        <h2>Horários disponíveis</h2>
+        <div id="horarios-container"></div><br>
+
+        <button type="submit">Agendar</button>
+      </form>
     </section>
-
-    <form id="form-agendamento">
-      <label for="calendario" class="required">Escolha o dia:</label>
-      <input type="date" id="calendario" required />
-
-      <label for="horario" class="required">Escolha o horário:</label>
-      <select id="horario" required></select>
-
-      <label for="nome" class="required">Nome completo:</label>
-      <input type="text" id="nome" placeholder="Seu nome" required />
-
-      <label for="telefone" class="required">Telefone:</label>
-      <input type="text" id="telefone" placeholder="(00) 00000-0000" required />
-
-      <label for="email">E-mail (opcional):</label>
-      <input type="email" id="email" placeholder="exemplo@email.com" />
-
-      <fieldset>
-        <legend class="required">Forma de pagamento:</legend>
-        <label><input type="radio" name="pagamento" value="Dinheiro" required /> Dinheiro</label>
-        <label><input type="radio" name="pagamento" value="PIX" /> PIX</label>
-        <label><input type="radio" name="pagamento" value="Cartão Débito" /> Cartão Débito</label>
-        <label><input type="radio" name="pagamento" value="Cartão Crédito" /> Cartão Crédito</label>
-      </fieldset>
-
-      <input type="submit" value="Agendar" />
-    </form>
-
-    <div id="resultado"></div>
-  </div>
+  </main>
 
   <script src="agendamento.js"></script>
 </body>
