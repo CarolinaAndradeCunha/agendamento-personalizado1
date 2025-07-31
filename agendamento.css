@@ -1,36 +1,83 @@
 :root {
-  --cor-principal: #f8e1f4;
-  --cor-secundaria: #e4c1ec;
-  --cor-destaque: #c06c84;
-  --cor-texto: #333;
-  --cor-branca: #fff;
-  --cor-borda: #ddd;
+  --cor-principal: #c06c84;
+  --fundo: #f9f9f9;
+  --texto: #222;
+  --cinza: #ccc;
+  --branco: #fff;
   --fonte-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --input-border: #bbb;
+  --input-focus: #c06c84;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #fdfdfd;
-  margin: 0;
-  padding: 0;
+  font-family: var(--fonte-principal);
+  background-color: var(--fundo);
+  color: var(--texto);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
 }
 
 .container {
-  max-width: 600px;
-  margin: 3rem auto;
-  background-color: #fff;
+  background-color: var(--branco);
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 0 10px #ccc;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-width: 480px;
+  width: 100%;
 }
 
-h1, h2 {
-  color: #333;
+h1 {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: var(--cor-principal);
   text-align: center;
 }
 
-ul {
-  padding-left: 1.2rem;
+section {
+  margin-bottom: 2rem;
+}
+
+section h2 {
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 2px solid var(--cor-principal);
+  padding-bottom: 0.25rem;
+}
+
+#lista-servicos {
+  list-style: none;
+  margin-bottom: 0.75rem;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid var(--cinza);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  background: #fafafa;
+}
+
+#lista-servicos li {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #ddd;
+  font-weight: 500;
+}
+
+#lista-servicos li:last-child {
+  border-bottom: none;
+}
+
+#total {
+  font-weight: 700;
+  color: var(--cor-principal);
+  font-size: 1.1rem;
 }
 
 form {
@@ -39,49 +86,113 @@ form {
   gap: 1rem;
 }
 
+label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  display: inline-block;
+}
+
+label.required::after {
+  content: " *";
+  color: #d93025;
+  font-weight: 700;
+}
+
 input[type="text"],
 input[type="email"],
 input[type="date"],
 select {
-  padding: 0.5rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
   font-size: 1rem;
+  transition: border-color 0.3s;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-input[type="submit"] {
-  padding: 0.7rem;
-  background-color: #2e7d32;
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--input-focus);
+  box-shadow: 0 0 5px var(--input-focus);
+}
+
+fieldset {
+  border: 1px solid var(--cinza);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+}
+
+fieldset legend {
+  font-weight: 700;
+  color: var(--cor-principal);
+  padding: 0 0.25rem;
+}
+
+fieldset label {
+  font-weight: 500;
+  margin-right: 1rem;
   cursor: pointer;
 }
 
-input[type="submit"]:hover {
-  background-color: #1b5e20;
+input[type="radio"] {
+  margin-right: 0.3rem;
+  cursor: pointer;
+  vertical-align: middle;
 }
 
-.required::after {
-  content: " *";
-  color: red;
+input[type="submit"] {
+  background-color: var(--cor-principal);
+  color: var(--branco);
+  padding: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+  text-decoration: none; /* sem underline */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="submit"]:hover {
+  background-color: #e4a9d1;
 }
 
 #resultado {
-  margin-top: 2rem;
-  padding: 1rem;
-  background-color: #e8f5e9;
-  border-left: 5px solid #66bb6a;
-  display: none;
+  margin-top: 1.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--cor-principal);
+  min-height: 2rem;
+  text-align: center;
 }
 
-@media (max-width: 600px) {
-  .container {
+/* Scroll personalizado para lista de serviços */
+#lista-servicos::-webkit-scrollbar {
+  width: 6px;
+}
+
+#lista-servicos::-webkit-scrollbar-thumb {
+  background-color: var(--cor-principal);
+  border-radius: 3px;
+}
+
+#lista-servicos::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  body {
     padding: 1rem;
   }
 
-  input[type="submit"] {
-    font-size: 1rem;
+  .container {
+    padding: 1.5rem;
   }
 }
