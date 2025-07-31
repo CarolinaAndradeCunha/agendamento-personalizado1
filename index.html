@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Página de Agendamento</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="logo-nome">
+      <img src="perfil-estetica.jpg" alt="Foto perfil" class="foto-perfil">
+      <span>Nome da Empresa</span>
+    </div>
+    <div class="botoes-header">
+      <button class="icon-btn" title="Instagram">📸</button>
+      <button class="icon-btn" title="WhatsApp">💬</button>
+      <button class="icon-btn" title="Expediente">⏰</button>
+      <button class="icon-btn" title="Endereço">📍</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Página 1: Categorias principais -->
+    <section class="categorias" id="categorias">
+      <button class="servico-btn" data-categoria="unha">Unha</button>
+      <button class="servico-btn" data-categoria="cabelo">Cabelo</button>
+      <button class="servico-btn" data-categoria="maquiagem">Maquiagem</button>
+    </section>
+
+    <!-- Página 2: Subserviços -->
+    <section class="subservicos hidden" id="subservicos">
+      <button id="voltar-categorias" class="btn-voltar">← Voltar</button>
+      <div id="lista-subservicos">
+        <!-- Subserviços são inseridos aqui via JS -->
+      </div>
+    </section>
+
+    <!-- Serviços selecionados e botão agendar -->
+    <section class="agendamento" id="agendamento">
+      <ul class="servicos-selecionados" id="lista-agendados">
+        <!-- Serviços escolhidos vão aqui -->
+      </ul>
+      <a href="#" class="btn-agendar">Agendar</a>
+      <div id="msg-erro" class="msg-erro"></div> <!-- Mensagem de erro -->
+    </section>
+  </main>
+
+  <footer>
+    <p>@2025 - Desenvolvido por Ateliê Digital</p>
+  </footer>
+
+  <!-- Popups -->
+  <div id="popup-instagram" class="popup">
+    <p>@meunegocio</p>
+    <a href="https://instagram.com/meunegocio" target="_blank">Ver no Instagram</a>
+  </div>
+
+  <div id="popup-whatsapp" class="popup">
+    <p>Envie uma mensagem para:</p>
+    <p><strong>(11) 91234-5678</strong></p>
+    <a href="https://wa.me/5511912345678" target="_blank">Enviar mensagem</a>
+  </div>
+
+  <div id="popup-expediente" class="popup">
+    <p><strong>Horário de atendimento:</strong></p>
+    <p>Seg a Sex: 9h às 18h<br>Almoço: 12h às 13h30</p>
+    <p>Sábado: 9h às 14h</p>
+  </div>
+
+  <div id="popup-endereco" class="popup">
+    <p><strong>Endereço:</strong></p>
+    <p>Rua das Flores, 123<br>Cidade - Estado</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
