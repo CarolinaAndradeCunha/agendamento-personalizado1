@@ -48,15 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const dadosServicos = {
     unha: [
-      { nome: "Alongamento em gel", tempo: "1h", preco: 50, img: "gel.jpg" },
-      { nome: "Esmaltação", tempo: "30min", preco: 25, img: "esmalte.jpg" },
+      { nome: "Alongamento em gel", tempo: "1h", preco: 50, img: "assets/alongamentogel.jpg" },
+      { nome: "Esmaltação", tempo: "30min", preco: 25, img: "assets/esmaltacao.jpg" },
     ],
     cabelo: [
-      { nome: "Corte feminino", tempo: "40min", preco: 40, img: "corte.jpg" },
-      { nome: "Hidratação", tempo: "1h", preco: 60, img: "hidratacao.jpg" },
+      { nome: "Corte feminino", tempo: "40min", preco: 40, img: "assets/corte.jpg" },
+      { nome: "Hidratação", tempo: "1h", preco: 60, img: "assets/hidratacao.jpg" },
     ],
     maquiagem: [
-      { nome: "Make social", tempo: "1h", preco: 70, img: "make.jpg" },
+      { nome: "Make social", tempo: "1h", preco: 70, img: "assets/makesocial.jpg" },
     ]
   };
 
