@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // seus seletores e dados de popup mantidos aqui...
+
+  // seus botões e popups (sem alterações)
   const buttons = {
     instagram: document.querySelector('button[title="Instagram"]'),
     whatsapp: document.querySelector('button[title="WhatsApp"]'),
@@ -29,13 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
   buttons.expediente.addEventListener('click', () => togglePopup('expediente'));
   buttons.endereco.addEventListener('click', () => togglePopup('endereco'));
 
-  // Fechar popups ao clicar fora
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.popup') && !e.target.closest('header button')) {
       closeAllPopups();
     }
   });
 
+  // DOM elements para escolha dos serviços
   const categorias = document.getElementById('categorias');
   const subservicos = document.getElementById('subservicos');
   const voltarBtn = document.getElementById('voltar-categorias');
@@ -44,19 +47,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const botaoAgendar = document.querySelector('.btn-agendar');
   const msgErro = document.getElementById('msg-erro');
 
+  // array que guarda serviços escolhidos
   const servicosEscolhidos = [];
 
+  // dadosServicos com campo duracaoMinutos adicionado
   const dadosServicos = {
     unha: [
-      { nome: "Alongamento em gel", tempo: "1h", preco: 50, img: "assets/alongamentogel.jpg" },
-      { nome: "Esmaltação", tempo: "30min", preco: 25, img: "assets/esmaltacao.jpg" },
+      { nome: "Alongamento em gel", tempo: "1h", duracaoMinutos: 60, preco: 50, img: "assets/alongamentogel.jpg" },
+      { nome: "Esmaltação", tempo: "30min", duracaoMinutos: 30, preco: 25, img: "assets/esmaltacao.jpg" },
     ],
     cabelo: [
-      { nome: "Corte feminino", tempo: "40min", preco: 40, img: "assets/corte.jpg" },
-      { nome: "Hidratação", tempo: "1h", preco: 60, img: "assets/hidratacao.jpg" },
+      { nome: "Corte feminino", tempo: "40min", duracaoMinutos: 40, preco: 40, img: "assets/corte.jpg" },
+      { nome: "Hidratação", tempo: "1h", duracaoMinutos: 60, preco: 60, img: "assets/hidratacao.jpg" },
     ],
     maquiagem: [
-      { nome: "Make social", tempo: "1h", preco: 70, img: "assets/makesocial.jpg" },
+      { nome: "Make social", tempo: "1h", duracaoMinutos: 60, preco: 70, img: "assets/makesocial.jpg" },
     ]
   };
 
@@ -94,12 +99,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Clicar em descrição = adicionar
+  // Clicar em descrição = adicionar com campo duracao (minutos)
   listaSubservicos.addEventListener('click', (e) => {
     const el = e.target.closest('.subservico-desc');
     if (el) {
       const { index, cat } = el.dataset;
-      const servico = dadosServicos[cat][index];
+      const servicoOriginal = dadosServicos[cat][index];
+
+      // Cria novo objeto incluindo duracao numérica para o agendamento
+      const servico = {
+        nome: servicoOriginal.nome,
+        preco: servicoOriginal.preco,
+        duracao: servicoOriginal.duracaoMinutos
+      };
 
       // Evitar duplicatas
       if (!servicosEscolhidos.find(s => s.nome === servico.nome)) {
@@ -124,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     servicosEscolhidos.forEach((s, i) => {
       const li = document.createElement('li');
       li.innerHTML = `
-        ${s.nome} - ${s.tempo} - R$ ${s.preco}
+        ${s.nome} - ${s.duracao} min - R$ ${s.preco}
         <button data-index="${i}">×</button>
       `;
       listaAgendados.appendChild(li);
@@ -149,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = 'agendamento.html';
   });
 
-  // Modal imagem grande
+  // Modal imagem grande (mantém seu código original)
   const modal = document.createElement('div');
   modal.id = 'modal-imagem';
   modal.style.display = 'none';
