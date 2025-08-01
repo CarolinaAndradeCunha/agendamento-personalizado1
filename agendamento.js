@@ -1,22 +1,3 @@
-// Import Firebase SDK modular
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
-import { getDatabase, ref, get, push } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
-
-// Configuração do Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCPWrq-J2UKlfdIWElcfhN7a1IMbEK3y80",
-  authDomain: "painel-agendamento.firebaseapp.com",
-  databaseURL: "https://painel-agendamento-default-rtdb.firebaseio.com/",
-  projectId: "painel-agendamento",
-  storageBucket: "painel-agendamento.firebasestorage.app",
-  messagingSenderId: "192094406681",
-  appId: "1:192094406681:web:46a39fbff85684f5d08288"
-};
-
-// Inicializar Firebase
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-
 // Elementos DOM
 const form = document.getElementById("form-agendamento");
 const calendarioInput = document.getElementById("calendario");
@@ -82,8 +63,8 @@ async function gerarHorarios(data) {
     form.querySelector("input[type='submit']").disabled = false;
   }
 
-  const snapshot = await get(ref(database, `agendamentos/${data}`));
-  const agendamentos = snapshot.exists() ? Object.values(snapshot.val()) : [];
+  // ⚠️ Substituir por busca na Supabase futuramente
+  const agendamentos = []; // <-- lista de agendamentos do dia
 
   const ocupados = agendamentos.map(a => ({
     inicio: paraMinutos(a.horario),
@@ -139,17 +120,8 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // Verifica conflito
-  const snap = await get(ref(database, `agendamentos/${data}`));
-  const agendamentos = snap.exists() ? Object.values(snap.val()) : [];
-
-  const conflito = agendamentos.some(a => {
-    const inicio = paraMinutos(a.horario);
-    const fim = inicio + (a.duracao || 30);
-    const agInicio = paraMinutos(horario);
-    const agFim = agInicio + duracaoTotal;
-    return agInicio < fim && agFim > inicio;
-  });
+  // ⚠️ Verificação de conflito será feita com Supabase depois
+  const conflito = false;
 
   if (conflito) {
     alert("Esse horário já foi agendado. Escolha outro.");
@@ -169,8 +141,9 @@ form.addEventListener("submit", async (e) => {
     criadoEm: new Date().toISOString()
   };
 
+  // ⚠️ Aqui será o envio para a Supabase
   try {
-    await push(ref(database, `agendamentos/${data}`), novoAgendamento);
+    console.log("Salvar no banco:", novoAgendamento);
   } catch (err) {
     alert("Erro ao salvar o agendamento.");
     console.error(err);
