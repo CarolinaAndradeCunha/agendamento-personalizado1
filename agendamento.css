@@ -5,6 +5,8 @@
   --cor-input: #fff;
   --cor-borda: #ccc;
   --cor-sucesso: #dff0d8;
+  --branco: #fff;
+  --cinza: #ccc;
 }
 
 * {
@@ -43,7 +45,7 @@ header {
 .icon-btn {
   background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   cursor: pointer;
 }
 
@@ -57,7 +59,7 @@ body {
 .container {
   max-width: 700px;
   margin: 0 auto;
-  background: white;
+  background: var(--branco);
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -94,6 +96,7 @@ select {
   border-radius: 5px;
   background-color: var(--cor-input);
   font-size: 1rem;
+  width: 100%;
 }
 
 fieldset {
@@ -167,7 +170,7 @@ footer {
 }
 
 .mensagem-conteudo {
-  background-color: white;
+  background-color: var(--branco);
   color: #333;
   padding: 2rem;
   border-radius: 8px;
