@@ -1,205 +1,94 @@
 :root {
-  --cor-fundo: #fff0f5;
-  --cor-principal: #c06c84;
+  --cor-principal: #f8e1f4;
+  --cor-secundaria: #e4c1ec;
+  --cor-destaque: #c06c84;
   --cor-texto: #333;
-  --cor-input: #fff;
-  --cor-borda: #ccc;
-  --cor-sucesso: #dff0d8;
-  --branco: #fff;
-  --cinza: #ccc;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  --cor-branca: #fff;
+  --cor-borda: #ddd;
+  --fonte-principal: "Poppins", sans-serif;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: var(--cor-fundo);
+  margin: 0;
+  font-family: var(--fonte-principal);
+  background-color: var(--cor-principal);
   color: var(--cor-texto);
-  padding: 20px;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 1rem;
-  background-color: var(--branco);
-  border-bottom: 1px solid var(--cinza);
-}
-
-.logo-nome {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.foto-perfil {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.botoes-header {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.icon-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
 }
 
 .container {
-  max-width: 700px;
-  margin: 0 auto;
-  background: var(--branco);
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 2rem auto;
+  background-color: var(--cor-branca);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2 {
-  color: var(--cor-principal);
-  margin-bottom: 15px;
+h1,
+h2 {
   text-align: center;
+  color: var(--cor-destaque);
 }
 
-section {
-  margin-bottom: 20px;
+label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+  font-weight: bold;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 10px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="date"],
-select {
-  padding: 10px;
-  border: 1px solid var(--cor-borda);
-  border-radius: 5px;
-  background-color: var(--cor-input);
-  font-size: 1rem;
+input,
+select,
+button,
+textarea {
   width: 100%;
-}
-
-fieldset {
-  border: none;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-fieldset label {
-  background-color: #f0f0f0;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-input[type="radio"] {
-  margin-right: 6px;
-}
-
-.required::after {
-  content: "*";
-  color: red;
-  margin-left: 4px;
-}
-
-.botao-agendar {
-  background-color: var(--cor-principal);
-  color: white;
-  padding: 12px;
+  padding: 0.75rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  font-family: var(--fonte-principal);
   font-size: 1rem;
+  box-sizing: border-box;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--cor-destaque);
+}
+
+button {
+  background-color: var(--cor-destaque);
+  color: var(--cor-branca);
   border: none;
-  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 10px;
+  margin-top: 1rem;
 }
 
-.botao-agendar:hover {
-  background-color: #a85a6f;
+button:hover {
+  background-color: #a3536d;
 }
 
-#resultado {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: var(--cor-sucesso);
-  border-radius: 8px;
+.alerta {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #ffe0e0;
+  color: #a33;
+  border: 1px solid #f5c2c2;
+  border-radius: 0.5rem;
   display: none;
 }
 
-footer {
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.875rem;
-  color: #666;
+.sucesso {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
 }
 
-#mensagem-sucesso {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0,0,0,0.75);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.mensagem-conteudo {
-  background-color: var(--branco);
-  color: #333;
-  padding: 2rem;
-  border-radius: 8px;
-  text-align: center;
-  max-width: 90%;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
-
-.mensagem-conteudo h2 {
-  margin-bottom: 1rem;
-}
-
-.mensagem-conteudo button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  border: none;
-  background-color: #28a745;
-  color: white;
-  font-weight: bold;
-  border-radius: 4px;
+/* Estilo do select de horário */
+#horario {
+  min-height: 40px;
+  appearance: auto;
   cursor: pointer;
-}
-
-@media (max-width: 600px) {
-  .container {
-    padding: 15px;
-  }
-
-  fieldset {
-    flex-direction: column;
-  }
 }
