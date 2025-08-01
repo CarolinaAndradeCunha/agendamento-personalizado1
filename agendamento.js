@@ -175,8 +175,14 @@ form.addEventListener("submit", async (e) => {
     criadoEm: new Date().toISOString()
   };
 
-  // Salva no Firebase
-  await push(ref(database, `agendamentos/${data}`), novoAgendamento);
+  try {
+    // Salva no Firebase
+    await push(ref(database, `agendamentos/${data}`), novoAgendamento);
+  } catch (error) {
+    alert("Erro ao salvar o agendamento. Tente novamente.");
+    console.error(error);
+    return;
+  }
 
   // Limpa seleção dos serviços
   localStorage.removeItem("servicosSelecionados");
