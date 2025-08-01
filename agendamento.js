@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 import { getDatabase, ref, get, push } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 
-// Config Firebase (substitua se precisar)
+// Configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCPWrq-J2UKlfdIWElcfhN7a1IMbEK3y80",
   authDomain: "painel-agendamento.firebaseapp.com",
@@ -13,51 +13,51 @@ const firebaseConfig = {
   appId: "1:192094406681:web:46a39fbff85684f5d08288"
 };
 
-// Inicializa Firebase
+// Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-// Seletores do DOM
+// Elementos DOM
 const form = document.getElementById("form-agendamento");
-const horarioSelect = document.getElementById("horario");
 const calendarioInput = document.getElementById("calendario");
+const horarioSelect = document.getElementById("horario");
 const resultado = document.getElementById("resultado");
 const mensagemSucesso = document.getElementById("mensagem-sucesso");
 const listaServicos = document.getElementById("lista-servicos");
 const totalSpan = document.getElementById("total");
 
-// Horários em minutos
-const horarioInicio = 9 * 60;    // 09:00
-const horarioFim = 18 * 60;      // 18:00
-const pausaInicio = 12 * 60;     // 12:00
-const pausaFim = 13.5 * 60;      // 13:30
+// Horários
+const horarioInicio = 9 * 60;
+const horarioFim = 18 * 60;
+const pausaInicio = 12 * 60;
+const pausaFim = 13.5 * 60;
 
-// Funções de conversão
+// Utilitários de hora
 function paraMinutos(hora) {
   const [h, m] = hora.split(":").map(Number);
   return h * 60 + m;
 }
 
 function paraHora(min) {
-  const h = Math.floor(min / 60).toString().padStart(2, '0');
-  const m = (min % 60).toString().padStart(2, '0');
+  const h = Math.floor(min / 60).toString().padStart(2, "0");
+  const m = (min % 60).toString().padStart(2, "0");
   return `${h}:${m}`;
 }
 
-// Pega serviços selecionados do localStorage e atualiza a lista + total
+// Carrega serviços do localStorage (temporário)
 function carregarServicos() {
-  const servicosEscolhidos = JSON.parse(localStorage.getItem("servicosSelecionados")) || [];
+  const servicosSelecionados = JSON.parse(localStorage.getItem("servicosSelecionados")) || [];
   listaServicos.innerHTML = "";
   let total = 0;
   let duracaoTotal = 0;
 
-  if (servicosEscolhidos.length === 0) {
+  if (servicosSelecionados.length === 0) {
     listaServicos.innerHTML = "<li>Nenhum serviço selecionado.</li>";
     totalSpan.textContent = "R$ 0,00";
-    return { total, duracaoTotal, servicosEscolhidos };
+    return { total, duracaoTotal, servicosSelecionados };
   }
 
-  servicosEscolhidos.forEach(servico => {
+  servicosSelecionados.forEach(servico => {
     const li = document.createElement("li");
     li.textContent = `${servico.nome} - R$ ${servico.preco.toFixed(2)}`;
     listaServicos.appendChild(li);
@@ -66,15 +66,15 @@ function carregarServicos() {
   });
 
   totalSpan.textContent = `R$ ${total.toFixed(2)}`;
-  return { total, duracaoTotal, servicosEscolhidos };
+  return { total, duracaoTotal, servicosSelecionados };
 }
 
-// Gera horários disponíveis para a data escolhida
+// Gera horários disponíveis
 async function gerarHorarios(data) {
   horarioSelect.innerHTML = "";
 
-  const { duracaoTotal, servicosEscolhidos } = carregarServicos();
-  if (servicosEscolhidos.length === 0) {
+  const { duracaoTotal, servicosSelecionados } = carregarServicos();
+  if (servicosSelecionados.length === 0) {
     horarioSelect.innerHTML = `<option disabled selected>Selecione os serviços primeiro</option>`;
     form.querySelector("input[type='submit']").disabled = true;
     return;
@@ -82,30 +82,25 @@ async function gerarHorarios(data) {
     form.querySelector("input[type='submit']").disabled = false;
   }
 
-  const agendamentosSnap = await get(ref(database, `agendamentos/${data}`));
-  const agendamentosData = agendamentosSnap.exists() ? agendamentosSnap.val() : {};
+  const snapshot = await get(ref(database, `agendamentos/${data}`));
+  const agendamentos = snapshot.exists() ? Object.values(snapshot.val()) : [];
 
-  // Horários ocupados (inicio e duração)
-  const ocupados = Object.values(agendamentosData).map(ag => ({
-    inicio: paraMinutos(ag.horario),
-    duracao: ag.duracao || 30
+  const ocupados = agendamentos.map(a => ({
+    inicio: paraMinutos(a.horario),
+    duracao: a.duracao || 30
   }));
 
   for (let t = horarioInicio; t + duracaoTotal <= horarioFim; t += 15) {
-    const fimAtual = t + duracaoTotal;
+    const fim = t + duracaoTotal;
+    if (t < pausaFim && fim > pausaInicio) continue;
 
-    // Não pode agendar no horário do almoço
-    if (t < pausaFim && fimAtual > pausaInicio) continue;
-
-    // Verifica conflito
     const conflito = ocupados.some(({ inicio, duracao }) => {
-      const fimExistente = inicio + duracao;
-      return (t < fimExistente && fimAtual > inicio);
+      const fimAg = inicio + duracao;
+      return t < fimAg && fim > inicio;
     });
 
     if (conflito) continue;
 
-    // Adiciona opção
     const option = document.createElement("option");
     option.value = paraHora(t);
     option.textContent = paraHora(t);
@@ -121,12 +116,12 @@ async function gerarHorarios(data) {
   }
 }
 
-// Evento: quando muda o calendário, gera horários
+// Atualiza horários ao mudar a data
 calendarioInput.addEventListener("change", () => {
-  if(calendarioInput.value) gerarHorarios(calendarioInput.value);
+  if (calendarioInput.value) gerarHorarios(calendarioInput.value);
 });
 
-// Evento: envio do formulário
+// Submissão do formulário
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -135,25 +130,25 @@ form.addEventListener("submit", async (e) => {
   const email = form.email.value.trim();
   const data = calendarioInput.value;
   const horario = horarioSelect.value;
-  const pagamento = form.querySelector('input[name="pagamento"]:checked')?.value;
+  const pagamento = form.querySelector("input[name='pagamento']:checked")?.value;
 
-  const { total, duracaoTotal, servicosEscolhidos } = carregarServicos();
+  const { total, duracaoTotal, servicosSelecionados } = carregarServicos();
 
   if (!nome || !telefone || !data || !horario || !pagamento) {
-    alert("Por favor, preencha todos os campos obrigatórios.");
+    alert("Preencha todos os campos obrigatórios.");
     return;
   }
 
-  // Verifica se horário está disponível
-  const agendamentosSnap = await get(ref(database, `agendamentos/${data}`));
-  const agendamentosData = agendamentosSnap.exists() ? agendamentosSnap.val() : {};
+  // Verifica conflito
+  const snap = await get(ref(database, `agendamentos/${data}`));
+  const agendamentos = snap.exists() ? Object.values(snap.val()) : [];
 
-  const conflito = Object.values(agendamentosData).some(ag => {
-    const inicio = paraMinutos(ag.horario);
-    const fim = inicio + (ag.duracao || 30);
+  const conflito = agendamentos.some(a => {
+    const inicio = paraMinutos(a.horario);
+    const fim = inicio + (a.duracao || 30);
     const agInicio = paraMinutos(horario);
     const agFim = agInicio + duracaoTotal;
-    return (agInicio < fim && agFim > inicio);
+    return agInicio < fim && agFim > inicio;
   });
 
   if (conflito) {
@@ -162,12 +157,11 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // Cria objeto do novo agendamento
   const novoAgendamento = {
     nome,
     telefone,
     email,
-    servicos: servicosEscolhidos,
+    servicos: servicosSelecionados,
     horario,
     duracao: duracaoTotal,
     total,
@@ -176,18 +170,17 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    // Salva no Firebase
     await push(ref(database, `agendamentos/${data}`), novoAgendamento);
-  } catch (error) {
-    alert("Erro ao salvar o agendamento. Tente novamente.");
-    console.error(error);
+  } catch (err) {
+    alert("Erro ao salvar o agendamento.");
+    console.error(err);
     return;
   }
 
-  // Limpa seleção dos serviços
+  // Limpa localStorage
   localStorage.removeItem("servicosSelecionados");
 
-  // Mostra resultado para o usuário
+  // Mostra mensagem
   resultado.style.display = "block";
   resultado.innerHTML = `
     <h3>Agendamento Confirmado!</h3>
@@ -205,10 +198,10 @@ form.addEventListener("submit", async (e) => {
   horarioSelect.innerHTML = "";
 });
 
-// Se já tiver data preenchida no calendário ao carregar, gera horários
+// Inicializa se já tiver data
 if (calendarioInput.value) gerarHorarios(calendarioInput.value);
 
-// Função para fechar mensagem sucesso e recarregar a página
+// Fecha a mensagem de sucesso
 window.fecharMensagem = function () {
   mensagemSucesso.style.display = "none";
   location.reload();
