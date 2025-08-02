@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="agendamento.css" />
 </head>
 <body>
-    <header>
+  <header>
     <div class="logo-nome">
       <img src="assets/perfil-estetica.jpg" alt="Foto perfil" class="foto-perfil">
       <span>Nome da Empresa</span>
@@ -19,13 +19,21 @@
       <button class="icon-btn" title="Endereço">📍</button>
     </div>
   </header>
+
   <div class="container">
     <h1>Finalize seu agendamento</h1>
 
     <section>
       <h2>Serviços escolhidos</h2>
-      <ul id="lista-servicos"></ul>
-      <p><strong>Total:</strong> <span id="total"></span></p>
+      <ul id="lista-servicos">
+        <!-- Exemplo de item preenchido pelo JS ou dinâmico:
+        <li data-servico="Unha" data-duracao="40">Unha - 40min</li>
+        <li data-servico="Cabelo" data-duracao="60">Cabelo - 1h</li>
+        -->
+      </ul>
+      <p><strong>Total estimado:</strong> 
+        <span id="total" style="font-weight: bold; color: var(--cor-destaque);">0 min</span>
+      </p>
     </section>
 
     <form id="form-agendamento">
@@ -33,7 +41,9 @@
       <input type="date" id="calendario" required />
 
       <label for="horario" class="required">Escolha o horário:</label>
-      <select id="horario" required></select>
+      <select id="horario" required>
+        <!-- Preenchido via JS -->
+      </select>
 
       <label for="nome" class="required">Nome completo:</label>
       <input type="text" id="nome" placeholder="Seu nome" required />
@@ -57,20 +67,22 @@
 
     <div id="resultado"></div>
   </div>
-    <footer>
+
+  <footer>
     <p>@2025 - Desenvolvido por Ateliê Digital</p>
   </footer>
 
+  <!-- Modal de sucesso -->
   <div id="mensagem-sucesso" style="display: none;">
-  <div class="mensagem-conteudo">
-    <h2>Agendamento confirmado!</h2>
-    <p>Seu horário foi reservado com sucesso.</p>
-    <p>O pagamento será feito no dia do atendimento.</p>
-    <button onclick="fecharMensagem()">OK</button>
+    <div class="mensagem-conteudo">
+      <h2>Agendamento confirmado!</h2>
+      <p>Seu horário foi reservado com sucesso.</p>
+      <p>O pagamento será feito no dia do atendimento.</p>
+      <button onclick="fecharMensagem()">OK</button>
+    </div>
   </div>
-</div>
 
-<script type="module" src="agendamento.js"></script>
-  
+  <!-- JS principal -->
+  <script type="module" src="agendamento.js"></script>
 </body>
 </html>
