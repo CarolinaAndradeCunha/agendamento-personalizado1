@@ -45,8 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const botaoAgendar = document.querySelector('.btn-agendar');
   const msgErro = document.getElementById('msg-erro');
 
-  // Array para armazenar serviços selecionados
-  const servicosEscolhidos = [];
+  // Tenta carregar serviços selecionados do localStorage para persistência
+  let servicosEscolhidos = JSON.parse(localStorage.getItem('servicosSelecionados')) || [];
 
   // Dados dos serviços com duração em minutos
   const dadosServicos = {
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Atualiza visualmente a lista de serviços agendados
+  // Atualiza visualmente a lista de serviços agendados e salva no localStorage
   function atualizarAgendados() {
     listaAgendados.innerHTML = '';
     servicosEscolhidos.forEach((s, i) => {
@@ -152,7 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       listaAgendados.appendChild(li);
     });
+    localStorage.setItem('servicosSelecionados', JSON.stringify(servicosEscolhidos));
   }
+
+  // Inicializa lista agendados com dados do localStorage (persistência)
+  atualizarAgendados();
 
   // Botão Agendar: valida e salva localStorage, depois redireciona
   botaoAgendar.addEventListener('click', (e) => {
@@ -165,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 4000);
       return;
     }
-    localStorage.setItem('servicosSelecionados', JSON.stringify(servicosEscolhidos));
+    // Já salva localStorage em atualizarAgendados, só redirecionar aqui
     window.location.href = 'agendamento.html';
   });
 
