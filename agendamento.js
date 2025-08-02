@@ -7,25 +7,26 @@ const mensagemSucesso = document.getElementById("mensagem-sucesso");
 const listaServicos = document.getElementById("lista-servicos");
 const totalSpan = document.getElementById("total");
 
-// Horários
-const horarioInicio = 9 * 60;
-const horarioFim = 18 * 60;
-const pausaInicio = 12 * 60;
-const pausaFim = 13.5 * 60;
+// Horários em minutos (desde 00:00)
+const horarioInicio = 9 * 60;        // 09:00
+const horarioFim = 18 * 60;          // 18:00
+const pausaInicio = 12 * 60;         // 12:00
+const pausaFim = 13.5 * 60;          // 13:30
 
-// Utilitários de hora
+// Converte "HH:MM" para minutos do dia
 function paraMinutos(hora) {
   const [h, m] = hora.split(":").map(Number);
   return h * 60 + m;
 }
 
+// Converte minutos do dia para "HH:MM"
 function paraHora(min) {
   const h = Math.floor(min / 60).toString().padStart(2, "0");
   const m = (min % 60).toString().padStart(2, "0");
   return `${h}:${m}`;
 }
 
-// Carrega serviços do localStorage (temporário)
+// Carrega serviços do localStorage, exibe e calcula total tempo e preço
 function carregarServicos() {
   const servicosSelecionados = JSON.parse(localStorage.getItem("servicosSelecionados")) || [];
   listaServicos.innerHTML = "";
@@ -34,23 +35,36 @@ function carregarServicos() {
 
   if (servicosSelecionados.length === 0) {
     listaServicos.innerHTML = "<li>Nenhum serviço selecionado.</li>";
-    totalSpan.textContent = "R$ 0,00";
+    totalSpan.textContent = "0 min";
     return { total, duracaoTotal, servicosSelecionados };
   }
 
   servicosSelecionados.forEach(servico => {
     const li = document.createElement("li");
-    li.textContent = `${servico.nome} - R$ ${servico.preco.toFixed(2)}`;
+
+    li.dataset.duracao = servico.duracao || 30;
+    li.textContent = `${servico.nome} - R$ ${servico.preco.toFixed(2)} (${li.dataset.duracao}min)`;
     listaServicos.appendChild(li);
+
     total += servico.preco;
-    duracaoTotal += servico.duracao || 30;
+    duracaoTotal += parseInt(li.dataset.duracao);
   });
 
-  totalSpan.textContent = `R$ ${total.toFixed(2)}`;
+  // Formata o tempo total em "1h40min"
+  const horas = Math.floor(duracaoTotal / 60);
+  const minutos = duracaoTotal % 60;
+  let textoDuracao = "";
+
+  if (horas > 0) textoDuracao += `${horas}h`;
+  if (minutos > 0) textoDuracao += `${minutos}min`;
+  if (textoDuracao === "") textoDuracao = "0 min";
+
+  totalSpan.textContent = textoDuracao;
+
   return { total, duracaoTotal, servicosSelecionados };
 }
 
-// Gera horários disponíveis
+// Gera opções de horário disponíveis baseado no dia selecionado e duração total
 async function gerarHorarios(data) {
   horarioSelect.innerHTML = "";
 
@@ -63,31 +77,38 @@ async function gerarHorarios(data) {
     form.querySelector("input[type='submit']").disabled = false;
   }
 
-  // ⚠️ Substituir por busca na Supabase futuramente
-  const agendamentos = []; // <-- lista de agendamentos do dia
+  // Aqui você deve buscar os agendamentos reais do dia via Supabase, por enquanto está vazio
+  const agendamentos = []; 
+  // Estrutura esperada: [{ horario: "09:30", duracao: 40 }, { horario: "11:00", duracao: 60 }]
 
+  // Converte agendamentos para intervalos em minutos para facilitar checagem de conflitos
   const ocupados = agendamentos.map(a => ({
     inicio: paraMinutos(a.horario),
-    duracao: a.duracao || 30
+    fim: paraMinutos(a.horario) + (a.duracao || 30)
   }));
 
+  // Gera opções em intervalos de 15 minutos entre horarioInicio e horarioFim, respeitando a duração total
   for (let t = horarioInicio; t + duracaoTotal <= horarioFim; t += 15) {
     const fim = t + duracaoTotal;
+
+    // Não permitir agendamento que cruza horário de pausa
     if (t < pausaFim && fim > pausaInicio) continue;
 
-    const conflito = ocupados.some(({ inicio, duracao }) => {
-      const fimAg = inicio + duracao;
-      return t < fimAg && fim > inicio;
+    // Checa conflito com agendamentos existentes
+    const conflito = ocupados.some(({ inicio, fim: fimAg }) => {
+      return t < fimAg && fim > inicio; // intervalo sobreposto
     });
 
     if (conflito) continue;
 
+    // Adiciona opção válida
     const option = document.createElement("option");
     option.value = paraHora(t);
     option.textContent = paraHora(t);
     horarioSelect.appendChild(option);
   }
 
+  // Caso não haja horário disponível, avisa
   if (!horarioSelect.options.length) {
     const opt = document.createElement("option");
     opt.disabled = true;
@@ -97,12 +118,12 @@ async function gerarHorarios(data) {
   }
 }
 
-// Atualiza horários ao mudar a data
+// Atualiza horários quando muda a data
 calendarioInput.addEventListener("change", () => {
   if (calendarioInput.value) gerarHorarios(calendarioInput.value);
 });
 
-// Submissão do formulário
+// Tratamento do envio do formulário
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -120,8 +141,8 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // ⚠️ Verificação de conflito será feita com Supabase depois
-  const conflito = false;
+  // Aqui você faria verificação de conflito definitiva consultando Supabase, mas por enquanto:
+  const conflito = false; 
 
   if (conflito) {
     alert("Esse horário já foi agendado. Escolha outro.");
@@ -138,30 +159,26 @@ form.addEventListener("submit", async (e) => {
     duracao: duracaoTotal,
     total,
     pagamento,
-    criadoEm: new Date().toISOString()
+    criadoEm: new Date().toISOString(),
   };
 
-  // ⚠️ Aqui será o envio para a Supabase
-  try {
-    console.log("Salvar no banco:", novoAgendamento);
-  } catch (err) {
-    alert("Erro ao salvar o agendamento.");
-    console.error(err);
-    return;
-  }
+  // TODO: Enviar para Supabase
 
-  // Limpa localStorage
+  console.log("Agendamento a salvar:", novoAgendamento);
+
+  // Limpa seleção de serviços armazenada
   localStorage.removeItem("servicosSelecionados");
 
-  // Mostra mensagem
+  // Mostra confirmação na tela
   resultado.style.display = "block";
   resultado.innerHTML = `
     <h3>Agendamento Confirmado!</h3>
     <p><strong>Nome:</strong> ${nome}</p>
     <p><strong>Telefone:</strong> ${telefone}</p>
-    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Email:</strong> ${email || "-"}</p>
     <p><strong>Data:</strong> ${data}</p>
     <p><strong>Horário:</strong> ${horario}</p>
+    <p><strong>Duração:</strong> ${totalSpan.textContent}</p>
     <p><strong>Total:</strong> R$ ${total.toFixed(2)}</p>
     <p><strong>Forma de pagamento:</strong> ${pagamento}</p>
   `;
@@ -171,7 +188,7 @@ form.addEventListener("submit", async (e) => {
   horarioSelect.innerHTML = "";
 });
 
-// Inicializa se já tiver data
+// Inicializa a lista de horários se data já estiver preenchida ao carregar a página
 if (calendarioInput.value) gerarHorarios(calendarioInput.value);
 
 // Fecha a mensagem de sucesso
