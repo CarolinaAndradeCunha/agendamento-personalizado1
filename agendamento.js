@@ -183,7 +183,7 @@ form.addEventListener("submit", async (e) => {
     <p><strong>Forma de pagamento:</strong> ${pagamento}</p>
   `;
 
-  mensagemSucesso.style.display = "flex";
+  mensagemSucesso.classList.add("show");
   form.reset();
   horarioSelect.innerHTML = "";
 });
@@ -193,6 +193,6 @@ if (calendarioInput.value) gerarHorarios(calendarioInput.value);
 
 // Fecha a mensagem de sucesso
 window.fecharMensagem = function () {
-  mensagemSucesso.style.display = "none";
+  mensagemSucesso.classList.remove("show");
   location.reload();
 };
