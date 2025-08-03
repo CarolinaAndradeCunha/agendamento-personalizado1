@@ -164,9 +164,11 @@ calendarioInput.addEventListener("change", () => {
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const nome = form.nome.value.trim();
-  const telefone = form.telefone.value.trim();
-  const email = form.email.value.trim();
+  // ** AQUI, alterei para pegar os valores pelo getElementById **
+  const nome = document.getElementById("nome").value.trim();
+  const telefone = document.getElementById("telefone").value.trim();
+  const email = document.getElementById("email").value.trim();
+
   const data = calendarioInput.value;
   const horario = horarioSelect.value;
   const pagamento = form.querySelector("input[name='pagamento']:checked")?.value;
@@ -177,11 +179,6 @@ form.addEventListener("submit", async (e) => {
     alert("Preencha todos os campos obrigatórios.");
     return;
   }
-
-  // Verifica conflito definitivo consultando Supabase (pode melhorar depois)
-
-  // Aqui podemos colocar verificação extra se quiser (opcional)
-  // Por enquanto, confiamos na geração dos horários
 
   const novoAgendamento = {
     nome,
