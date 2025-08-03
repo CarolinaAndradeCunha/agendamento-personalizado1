@@ -1,10 +1,46 @@
+// --- Inicialização Supabase ---
 const supabaseUrl = 'https://fvjvxqojsditudefuiee.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2anZ4cW9qc2RpdHVkZWZ1aWVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNjMyNTQsImV4cCI6MjA2OTczOTI1NH0.iMEZeFVt0Sooj5wzH-AKFUXAdHShva5bSFJUSrSphpk';
-
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
+// --- Função para enviar agendamento ao Supabase ---
+async function enviarAgendamento(dados) {
+  const { data, error } = await supabase
+    .from('agendamentos')
+    .insert([dados]);
 
-// Elementos DOM
+  if (error) {
+    console.error('Erro ao agendar:', error.message);
+    alert('Erro ao agendar. Tente novamente.');
+    return false;
+  } else {
+    alert('Agendamento realizado com sucesso!');
+    console.log('Agendamento salvo:', data);
+    return true;
+  }
+}
+
+// --- Função auxiliar para converter "HH:MM" em minutos ---
+function paraMinutos(hora) {
+  const [h, m] = hora.split(":").map(Number);
+  return h * 60 + m;
+}
+
+// --- Função auxiliar para converter minutos em "HH:MM" ---
+function paraHora(min) {
+  const h = Math.floor(min / 60).toString().padStart(2, "0");
+  const m = (min % 60).toString().padStart(2, "0");
+  return `${h}:${m}`;
+}
+
+// --- Função para calcular hora_fim a partir da hora_inicio e duração ---
+function calcularHoraFim(horaInicioStr, duracaoMinutos) {
+  const minutosInicio = paraMinutos(horaInicioStr);
+  const minutosFim = minutosInicio + duracaoMinutos;
+  return paraHora(minutosFim);
+}
+
+// --- Elementos DOM ---
 const form = document.getElementById("form-agendamento");
 const calendarioInput = document.getElementById("calendario");
 const horarioSelect = document.getElementById("horario");
@@ -13,26 +49,7 @@ const mensagemSucesso = document.getElementById("mensagem-sucesso");
 const listaServicos = document.getElementById("lista-servicos");
 const totalSpan = document.getElementById("total");
 
-// Horários em minutos (desde 00:00)
-const horarioInicio = 9 * 60;        // 09:00
-const horarioFim = 18 * 60;          // 18:00
-const pausaInicio = 12 * 60;         // 12:00
-const pausaFim = 13.5 * 60;          // 13:30
-
-// Converte "HH:MM" para minutos do dia
-function paraMinutos(hora) {
-  const [h, m] = hora.split(":").map(Number);
-  return h * 60 + m;
-}
-
-// Converte minutos do dia para "HH:MM"
-function paraHora(min) {
-  const h = Math.floor(min / 60).toString().padStart(2, "0");
-  const m = (min % 60).toString().padStart(2, "0");
-  return `${h}:${m}`;
-}
-
-// Carrega serviços do localStorage, exibe e calcula total tempo e preço
+// --- Carrega serviços do localStorage, exibe e calcula total tempo e preço ---
 function carregarServicos() {
   const servicosSelecionados = JSON.parse(localStorage.getItem("servicosSelecionados")) || [];
   listaServicos.innerHTML = "";
@@ -70,7 +87,7 @@ function carregarServicos() {
   return { total, duracaoTotal, servicosSelecionados };
 }
 
-// Gera opções de horário disponíveis baseado no dia selecionado e duração total
+// --- Gera opções de horário disponíveis baseado no dia selecionado e duração total ---
 async function gerarHorarios(data) {
   horarioSelect.innerHTML = "";
 
@@ -83,15 +100,29 @@ async function gerarHorarios(data) {
     form.querySelector("input[type='submit']").disabled = false;
   }
 
-  // Aqui você deve buscar os agendamentos reais do dia via Supabase, por enquanto está vazio
-  const agendamentos = []; 
-  // Estrutura esperada: [{ horario: "09:30", duracao: 40 }, { horario: "11:00", duracao: 60 }]
+  // Busca os agendamentos reais do dia via Supabase
+  const { data: agendamentos, error } = await supabase
+    .from('agendamentos')
+    .select('hora_inicio, duracao_total')
+    .eq('data', data);
+
+  if (error) {
+    console.error('Erro ao buscar agendamentos:', error.message);
+    alert('Erro ao buscar horários disponíveis.');
+    return;
+  }
 
   // Converte agendamentos para intervalos em minutos para facilitar checagem de conflitos
   const ocupados = agendamentos.map(a => ({
-    inicio: paraMinutos(a.horario),
-    fim: paraMinutos(a.horario) + (a.duracao || 30)
+    inicio: paraMinutos(a.hora_inicio),
+    fim: paraMinutos(a.hora_inicio) + (a.duracao_total || 30)
   }));
+
+  // Parâmetros de horário disponíveis
+  const horarioInicio = 9 * 60;        // 09:00
+  const horarioFim = 18 * 60;          // 18:00
+  const pausaInicio = 12 * 60;         // 12:00
+  const pausaFim = 13.5 * 60;          // 13:30
 
   // Gera opções em intervalos de 15 minutos entre horarioInicio e horarioFim, respeitando a duração total
   for (let t = horarioInicio; t + duracaoTotal <= horarioFim; t += 15) {
@@ -124,12 +155,12 @@ async function gerarHorarios(data) {
   }
 }
 
-// Atualiza horários quando muda a data
+// --- Atualiza horários quando muda a data ---
 calendarioInput.addEventListener("change", () => {
   if (calendarioInput.value) gerarHorarios(calendarioInput.value);
 });
 
-// Tratamento do envio do formulário
+// --- Tratamento do envio do formulário ---
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -147,30 +178,28 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // Aqui você faria verificação de conflito definitiva consultando Supabase, mas por enquanto:
-  const conflito = false; 
+  // Verifica conflito definitivo consultando Supabase (pode melhorar depois)
 
-  if (conflito) {
-    alert("Esse horário já foi agendado. Escolha outro.");
-    gerarHorarios(data);
-    return;
-  }
+  // Aqui podemos colocar verificação extra se quiser (opcional)
+  // Por enquanto, confiamos na geração dos horários
 
   const novoAgendamento = {
     nome,
     telefone,
     email,
+    data,
+    hora_inicio: horario,
+    hora_fim: calcularHoraFim(horario, duracaoTotal),
     servicos: servicosSelecionados,
-    horario,
-    duracao: duracaoTotal,
-    total,
+    duracao_total: duracaoTotal,
+    total_preco: total,
     pagamento,
-    criadoEm: new Date().toISOString(),
+    criado_em: new Date().toISOString()
   };
 
-  // TODO: Enviar para Supabase
+  const sucesso = await enviarAgendamento(novoAgendamento);
 
-  console.log("Agendamento a salvar:", novoAgendamento);
+  if (!sucesso) return;
 
   // Limpa seleção de serviços armazenada
   localStorage.removeItem("servicosSelecionados");
@@ -194,10 +223,10 @@ form.addEventListener("submit", async (e) => {
   horarioSelect.innerHTML = "";
 });
 
-// Inicializa a lista de horários se data já estiver preenchida ao carregar a página
+// --- Inicializa a lista de horários se data já estiver preenchida ao carregar a página ---
 if (calendarioInput.value) gerarHorarios(calendarioInput.value);
 
-// Fecha a mensagem de sucesso
+// --- Fecha a mensagem de sucesso ---
 window.fecharMensagem = function () {
   mensagemSucesso.classList.remove("show");
   location.reload();
