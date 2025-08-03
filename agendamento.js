@@ -1,3 +1,9 @@
+const supabaseUrl = 'https://fvjvxqojsditudefuiee.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2anZ4cW9qc2RpdHVkZWZ1aWVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxNjMyNTQsImV4cCI6MjA2OTczOTI1NH0.iMEZeFVt0Sooj5wzH-AKFUXAdHShva5bSFJUSrSphpk';
+
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+
 // Elementos DOM
 const form = document.getElementById("form-agendamento");
 const calendarioInput = document.getElementById("calendario");
