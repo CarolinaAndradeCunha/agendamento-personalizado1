@@ -91,7 +91,7 @@ textarea:focus {
 }
 
 button {
-  background-color: var(--cor-destaque);
+  background-color: var(--cor-secundaria);
   color: var(--cor-branca);
   border: none;
   cursor: pointer;
