@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Painel de Agendamentos</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Painel da Profissional</title>
   <link rel="stylesheet" href="painel.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Agenda do Dia</h1>
-    
-    <label for="data">Escolha a data:</label>
-    <input type="date" id="data" />
+  <header>
+    <h1>Painel da Profissional</h1>
+  </header>
 
-    <ul id="lista-agendamentos"></ul>
-  </div>
+  <main class="container">
+    <section class="calendario-section">
+      <h2>Escolha um dia</h2>
+      <div id="calendario">
+        <!-- Calendário vai ser gerado aqui via JS futuramente -->
+      </div>
+    </section>
 
-  <script type="module" src="painel.js"></script>
+    <section class="agenda-section">
+      <h2>Compromissos do dia <span id="data-selecionada">(nenhum dia selecionado)</span></h2>
+      <ul id="lista-compromissos">
+        <!-- Lista preenchida via JS -->
+        <li>Selecione uma data para ver os compromissos.</li>
+      </ul>
+    </section>
+  </main>
 
+  <footer>
+    <p>@2025 - Desenvolvido por Ateliê Digital</p>
+  </footer>
+
+  <!-- Script virá depois -->
 </body>
 </html>
