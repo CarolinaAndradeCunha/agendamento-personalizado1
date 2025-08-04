@@ -71,8 +71,7 @@ header {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-h1,
-h2 {
+h1, h2 {
   text-align: center;
   color: var(--cor-destaque);
   margin-top: 0;
@@ -107,46 +106,40 @@ textarea:focus {
 fieldset {
   border: none;
   margin-top: 1rem;
+  padding: 0;
 }
 
-legend {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+/* Novos estilos para botões de pagamento */
+.forma-pagamento {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
 
-button,
-input[type="submit"] {
+.radio-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   background-color: var(--cor-secundaria);
-  color: var(--cor-branca);
-  border: none;
-  padding: 0.75rem;
+  padding: 0.6rem 1rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-  margin-top: 1rem;
+  transition: background-color 0.3s;
+  font-weight: 500;
 }
 
-button:hover,
-input[type="submit"]:hover {
-  background-color: #a3536d;
+.radio-btn:hover {
+  background-color: #d8a7d7;
 }
 
-.alerta {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: #ffe0e0;
-  color: #a33;
-  border: 1px solid #f5c2c2;
-  border-radius: 0.5rem;
-  display: none;
+.radio-btn input[type="radio"] {
+  accent-color: var(--cor-destaque);
+  margin: 0;
 }
 
-.sucesso {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
+.total-estimado {
+  font-weight: bold;
+  color: var(--cor-destaque);
 }
 
 /* Estilo do select de horário */
@@ -217,6 +210,25 @@ input[type="submit"]:hover {
 }
 
 .mensagem-conteudo button:hover {
+  background-color: #a3536d;
+}
+
+button,
+input[type="submit"] {
+  background-color: var(--cor-secundaria);
+  color: var(--cor-branca);
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+button:hover,
+input[type="submit"]:hover {
   background-color: #a3536d;
 }
 
