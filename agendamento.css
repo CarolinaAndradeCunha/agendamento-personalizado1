@@ -15,6 +15,39 @@ body {
   color: var(--cor-texto);
   padding: 1rem;
 }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--branco);
+  border-bottom: 1px solid var(--cinza);
+}
+
+.logo-nome {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.foto-perfil {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.botoes-header {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
 
 .container {
   max-width: 600px;
