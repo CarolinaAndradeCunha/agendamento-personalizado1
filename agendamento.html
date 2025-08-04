@@ -25,14 +25,9 @@
 
     <section>
       <h2>Serviços escolhidos</h2>
-      <ul id="lista-servicos">
-        <!-- Exemplo de item preenchido pelo JS ou dinâmico:
-        <li data-servico="Unha" data-duracao="40">Unha - 40min</li>
-        <li data-servico="Cabelo" data-duracao="60">Cabelo - 1h</li>
-        -->
-      </ul>
+      <ul id="lista-servicos"></ul>
       <p><strong>Total estimado:</strong> 
-        <span id="total" style="font-weight: bold; color: var(--cor-destaque);">0 min</span>
+        <span id="total" class="total-estimado">Calculando...</span>
       </p>
     </section>
 
@@ -41,9 +36,7 @@
       <input type="date" id="calendario" required />
 
       <label for="horario" class="required">Escolha o horário:</label>
-      <select id="horario" required>
-        <!-- Preenchido via JS -->
-      </select>
+      <select id="horario" required></select>
 
       <label for="nome" class="required">Nome completo:</label>
       <input type="text" id="nome" placeholder="Seu nome" required />
@@ -54,12 +47,20 @@
       <label for="email">E-mail (opcional):</label>
       <input type="email" id="email" placeholder="exemplo@email.com" />
 
-      <fieldset>
+      <fieldset class="forma-pagamento">
         <legend class="required">Forma de pagamento:</legend>
-        <label><input type="radio" name="pagamento" value="Dinheiro" required /> Dinheiro</label>
-        <label><input type="radio" name="pagamento" value="PIX" /> PIX</label>
-        <label><input type="radio" name="pagamento" value="Cartão Débito" /> Cartão Débito</label>
-        <label><input type="radio" name="pagamento" value="Cartão Crédito" /> Cartão Crédito</label>
+        <label class="radio-btn">
+          <input type="radio" name="pagamento" value="Dinheiro" required> Dinheiro
+        </label>
+        <label class="radio-btn">
+          <input type="radio" name="pagamento" value="PIX"> PIX
+        </label>
+        <label class="radio-btn">
+          <input type="radio" name="pagamento" value="Cartão Débito"> Cartão Débito
+        </label>
+        <label class="radio-btn">
+          <input type="radio" name="pagamento" value="Cartão Crédito"> Cartão Crédito
+        </label>
       </fieldset>
 
       <input type="submit" value="Agendar" class="botao-agendar" />
@@ -72,7 +73,6 @@
     <p>@2025 - Desenvolvido por Ateliê Digital</p>
   </footer>
 
-  <!-- Modal de sucesso -->
   <div id="mensagem-sucesso" style="display: none;">
     <div class="mensagem-conteudo">
       <h2>Agendamento confirmado!</h2>
@@ -81,7 +81,8 @@
       <button onclick="fecharMensagem()">OK</button>
     </div>
   </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script type="module" src="agendamento.js"></script>
 </body>
 </html>
