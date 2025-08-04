@@ -1,76 +1,121 @@
-/* painel.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 :root {
-  --cor-fundo: #fff8fc;
-  --cor-painel: #f4e1ec;
-  --cor-texto: #333;
-  --cor-destaque: #c06c84;
-  --cor-borda: #ccc;
-  --cor-titulo: #922d5d;
-
-  --fonte-titulo: 'Lora', serif;
-  --fonte-corpo: 'Roboto', sans-serif;
+  --cor-principal: #fce4ec;
+  --cor-secundaria: #f8bbd0;
+  --cor-destaque: #ec407a;
+  --cor-texto: #444;
+  --cor-branca: #fff;
+  --sombra: 0 4px 10px rgba(0, 0, 0, 0.1);
+  --borda-suave: 1px solid #eee;
+  --radius: 12px;
+  --fonte: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: var(--fonte-corpo);
-  background-color: var(--cor-fundo);
+  font-family: var(--fonte);
+  background-color: var(--cor-principal);
   color: var(--cor-texto);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
 }
 
 header {
   background-color: var(--cor-destaque);
-  color: white;
-  padding: 1rem 2rem;
-  width: 100%;
+  color: var(--cor-branca);
   text-align: center;
-  font-family: var(--fonte-titulo);
-  font-size: 1.8rem;
+  padding: 1.5rem 0;
+  box-shadow: var(--sombra);
+}
+
+header h1 {
+  font-size: 2rem;
   letter-spacing: 1px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-main {
-  padding: 2rem 1rem;
-  max-width: 800px;
-  width: 100%;
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
 }
 
-h2 {
-  color: var(--cor-titulo);
-  font-family: var(--fonte-titulo);
+section {
+  background-color: var(--cor-branca);
+  border: var(--borda-suave);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--sombra);
+}
+
+/* Calendário */
+.calendario-section h2,
+.agenda-section h2 {
+  color: var(--cor-destaque);
   margin-bottom: 1rem;
-  font-size: 1.5rem;
 }
 
-.agendamento {
-  background-color: var(--cor-painel);
-  border: 1px solid var(--cor-borda);
-  border-radius: 8px;
+#calendario {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+#calendario div {
+  background-color: var(--cor-secundaria);
+  border-radius: var(--radius);
   padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s;
-}
-
-.agendamento:hover {
-  transform: scale(1.01);
-}
-
-.agendamento p {
-  margin: 0.5rem 0;
-  font-size: 1rem;
-}
-
-.sem-agendamentos {
-  font-style: italic;
-  color: #888;
   text-align: center;
-  margin-top: 2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#calendario div:hover {
+  background-color: var(--cor-destaque);
+  color: white;
+  transform: scale(1.05);
+}
+
+#calendario .hoje {
+  background-color: var(--cor-destaque);
+  color: white;
+  font-weight: bold;
+}
+
+#data-selecionada {
+  font-weight: normal;
+  font-size: 1rem;
+  color: #777;
+}
+
+/* Lista de compromissos */
+#lista-compromissos {
+  list-style: none;
+  margin-top: 1rem;
+}
+
+#lista-compromissos li {
+  padding: 0.8rem;
+  margin-bottom: 0.5rem;
+  border: var(--borda-suave);
+  border-radius: var(--radius);
+  background-color: var(--cor-secundaria);
+  box-shadow: var(--sombra);
+}
+
+/* Rodapé */
+footer {
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: auto;
+  font-size: 0.9rem;
+  color: #666;
 }
