@@ -42,6 +42,10 @@
       <ul class="servicos-selecionados" id="lista-agendados">
         <!-- Serviços escolhidos vão aqui -->
       </ul>
+      <div class="totais-agendamento">
+        <span>Total: R$ <span id="total-preco">0</span></span>
+        <span>Duração: <span id="total-duracao">0</span> min</span>
+      </div>
       <a href="#" class="btn-agendar">Agendar</a>
       <div id="msg-erro" class="msg-erro"></div> <!-- Mensagem de erro -->
     </section>
@@ -72,6 +76,14 @@
   <div id="popup-endereco" class="popup">
     <p><strong>Endereço:</strong></p>
     <p>Rua das Flores, 123<br>Cidade - Estado</p>
+  </div>
+
+  <!-- Modal para imagem ampliada -->
+  <div id="modal-imagem" class="modal-imagem hidden">
+    <div class="modal-conteudo">
+      <button id="fechar-modal" class="btn-fechar-modal">✖</button>
+      <img src="" alt="Imagem ampliada" id="imagem-ampliada"/>
+    </div>
   </div>
 
   <script src="script.js"></script>
