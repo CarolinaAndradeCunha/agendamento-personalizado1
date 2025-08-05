@@ -30,40 +30,31 @@ function mostrarServicos() {
 
 // Simula buscar horários disponíveis do backend
 async function buscarHorariosDisponiveis(dataISO, duracaoMinutos) {
-  // Simulação: expediente 9:00-18:00, almoço 12:00-13:30, já agendados mock
   const expedienteInicio = 9 * 60;  // 9:00 em minutos
   const expedienteFim = 18 * 60;    // 18:00 em minutos
   const almocoInicio = 12 * 60;     // 12:00
   const almocoFim = 13 * 60 + 30;   // 13:30
 
-  // Mock de agendamentos já confirmados nesse dia (em minutos)
-  // Cada agendamento tem início e duração
   const agendamentos = [
-    { inicio: 10 * 60, duracao: 60 }, // 10:00-11:00
-    { inicio: 14 * 60, duracao: 90 }  // 14:00-15:30
+    { inicio: 10 * 60, duracao: 60 },
+    { inicio: 14 * 60, duracao: 90 }
   ];
 
-  // Gera horários a cada 30 min entre expediente, pulando almoço e conflitos
-  const interval = 30; // min
+  const interval = 30;
   const horarios = [];
 
   for (let min = expedienteInicio; min + duracaoMinutos <= expedienteFim; min += interval) {
-    // Verifica se está no horário de almoço
     if (min < almocoFim && (min + duracaoMinutos) > almocoInicio) {
       continue;
     }
 
-    // Verifica se conflita com algum agendamento
     let conflita = false;
     for (const ag of agendamentos) {
       const fimAg = ag.inicio + ag.duracao;
       const fimProposto = min + duracaoMinutos;
 
-      // Se início do proposto está dentro de outro agendamento
       if ((min >= ag.inicio && min < fimAg) ||
-          // ou o fim do proposto está dentro
           (fimProposto > ag.inicio && fimProposto <= fimAg) ||
-          // ou o proposto engloba outro agendamento
           (min <= ag.inicio && fimProposto >= fimAg)) {
         conflita = true;
         break;
@@ -80,7 +71,6 @@ async function preencherHorarios() {
   const inputData = document.getElementById('calendario');
   if (!inputData || !select) return;
 
-  // Se não tiver data escolhida, limpa opções
   if (!inputData.value) {
     select.innerHTML = '<option value="">Escolha uma data primeiro</option>';
     select.disabled = true;
@@ -107,7 +97,7 @@ async function preencherHorarios() {
   select.disabled = false;
 }
 
-// Envio do formulário de agendamento
+// Atualização da função de envio para usar a API real com Supabase e validação completa
 async function enviarAgendamento() {
   const nome = document.getElementById('nome').value.trim();
   const telefone = document.getElementById('telefone').value.trim();
@@ -126,58 +116,48 @@ async function enviarAgendamento() {
     telefone,
     email,
     data,
-    horario,
+    hora: horario,
     pagamento: pagamento.value,
     servicos: servicosSelecionados,
     totalPreco,
     totalDuracao
   };
 
-  // Simulação POST para backend
   try {
-    // Exemplo: você faz fetch para sua API aqui, troque a URL abaixo
-    /*
-    const response = await fetch('https://seu-backend/api/agendamentos', {
+    const response = await fetch('/api/agendar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(agendamento)
     });
-    if (!response.ok) throw new Error('Erro no agendamento');
-    */
+
+    const resultado = await response.json();
+
+    if (!response.ok) {
+      alert(resultado.error || 'Erro ao enviar agendamento.');
+      return;
+    }
 
     alert('Agendamento enviado com sucesso!');
-
-    // Limpa localStorage após agendar
-    localStorage.removeItem('servicosSelecionados');
-    localStorage.removeItem('totalPreco');
-    localStorage.removeItem('totalDuracao');
-
-    // Redirecionar ou resetar página
+    localStorage.clear();
     window.location.href = 'index.html';
-
   } catch (error) {
-    alert('Erro ao enviar agendamento: ' + error.message);
+    alert('Erro inesperado: ' + error.message);
   }
 }
 
-// Inicialização da página
 function init() {
   mostrarServicos();
 
-  // Só habilita botão agendar depois que preencher tudo na página (exemplo)
   btnAgendar.disabled = false;
 
-  // Preencher horários quando data mudar
   const inputData = document.getElementById('calendario');
   inputData.addEventListener('change', preencherHorarios);
 
-  // Botão enviar agendamento
   btnAgendar.addEventListener('click', (e) => {
     e.preventDefault();
     enviarAgendamento();
   });
 
-  // Inicia select horário desabilitado
   const selectHorario = document.getElementById('horario');
   selectHorario.innerHTML = '<option>Escolha uma data primeiro</option>';
   selectHorario.disabled = true;
