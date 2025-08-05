@@ -1,96 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Agendamento</title>
-  <link rel="stylesheet" href="agendamento.css" />
-</head>
-<body>
-  <header>
-    <div class="logo-nome">
-      <img src="assets/perfil-estetica.jpg" alt="Foto perfil" class="foto-perfil">
-      <span>Nome da Empresa</span>
-    </div>
-    <div class="botoes-header">
-      <button class="icon-btn" title="Instagram">📸</button>
-      <button class="icon-btn" title="WhatsApp">💬</button>
-      <button class="icon-btn" title="Expediente">⏰</button>
-      <button class="icon-btn" title="Endereço">📍</button>
-    </div>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Agendar Serviços</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Escolha seus serviços</h1>
+    </header>
 
-  <div class="container">
-    <h1>Finalize seu agendamento</h1>
+    <main>
+      <section id="lista-servicos">
+        <!-- Os cards de serviços serão adicionados aqui pelo script.js -->
+      </section>
 
-    <section>
-      <h2>Serviços escolhidos</h2>
-      <ul id="lista-servicos"></ul>
-      <p><strong>Total estimado:</strong> 
-        <span id="total" class="total-estimado">Calculando...</span>
-      </p>
-    </section>
+      <section id="resumo-selecionados">
+        <h2>Serviços Selecionados</h2>
+        <ul id="servicos-selecionados"></ul>
+        <p><strong>Total:</strong> R$ <span id="total-preco">0,00</span></p>
+        <p><strong>Duração Total:</strong> <span id="total-duracao">0</span> minutos</p>
+        <button id="btn-agendar">Agendar</button>
+      </section>
+    </main>
 
-    <form id="form-agendamento">
-      <label for="calendario" class="required">Escolha o dia:</label>
-      <input type="date" id="calendario" required />
-
-      <label for="horario" class="required">Escolha o horário:</label>
-      <select id="horario" required></select>
-
-      <label for="nome" class="required">Nome completo:</label>
-      <input type="text" id="nome" placeholder="Seu nome" required />
-
-      <label for="telefone" class="required">Telefone:</label>
-      <input type="text" id="telefone" placeholder="(00) 00000-0000" required />
-
-      <label for="email">E-mail (opcional):</label>
-      <input type="email" id="email" placeholder="exemplo@email.com" />
-
-    <fieldset class="forma-pagamento">
-  <legend class="required">Forma de pagamento:</legend>
-
-  <label class="radio-linha">
-    <input type="radio" name="pagamento" value="Dinheiro" required>
-    Dinheiro
-  </label>
-
-  <label class="radio-linha">
-    <input type="radio" name="pagamento" value="PIX">
-    PIX
-  </label>
-
-  <label class="radio-linha">
-    <input type="radio" name="pagamento" value="Cartão Débito">
-    Cartão Débito
-  </label>
-
-  <label class="radio-linha">
-    <input type="radio" name="pagamento" value="Cartão Crédito">
-    Cartão Crédito
-  </label>
-</fieldset>
-
-      <input type="submit" value="Agendar" class="botao-agendar" />
-    </form>
-
-    <div id="resultado"></div>
-  </div>
-
-  <footer>
-    <p>@2025 - Desenvolvido por Ateliê Digital</p>
-  </footer>
-
-  <div id="mensagem-sucesso" style="display: none;">
-    <div class="mensagem-conteudo">
-      <h2>Agendamento confirmado!</h2>
-      <p>Seu horário foi reservado com sucesso.</p>
-      <p>O pagamento será feito no dia do atendimento.</p>
-      <button onclick="fecharMensagem()">OK</button>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script type="module" src="agendamento.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
