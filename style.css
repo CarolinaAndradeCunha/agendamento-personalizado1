@@ -5,8 +5,12 @@
   --cinza: #ccc;
   --branco: #fff;
   --fonte-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  --selecionado-bg: #f8a5f4;
+  --selecionado-borda: #c06c84;
 }
 
+/* Reset */
 * {
   margin: 0;
   padding: 0;
@@ -81,20 +85,68 @@ main {
   border-radius: 6px;
   cursor: pointer;
   text-align: left;
-  transition: background 0.3s;
+  transition: background 0.3s, border-color 0.3s;
   width: 100%; /* largura total para todos os botões */
   box-sizing: border-box;
+
+  /* Layout horizontal com foto e texto */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.servico-btn:hover {
-  background-color: #f8a5f4;
+/* Foto pequena dentro do botão do serviço */
+.foto-servico-pequena {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  object-fit: cover;
+  cursor: pointer;
+  flex-shrink: 0;
+  border: 1px solid var(--cinza);
+  transition: transform 0.2s ease;
 }
 
+.foto-servico-pequena:hover {
+  transform: scale(1.1);
+}
+
+/* Div que contém nome e detalhes */
+.info-servico {
+  display: flex;
+  flex-direction: column;
+}
+
+.nome-servico {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--texto);
+}
+
+.detalhes-servico {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 0.15rem;
+}
+
+/* Quando o serviço estiver selecionado: muda bg e borda */
+.servico-btn.selecionado {
+  background-color: var(--selecionado-bg);
+  border-color: var(--selecionado-borda);
+}
+
+/* Hover efeito */
+.servico-btn:hover:not(.selecionado) {
+  background-color: #f8e0f9;
+}
+
+/* Subserviços section */
 .subservicos {
   flex: 3;
   overflow-y: auto;
 }
 
+/* Agendamento */
 .agendamento {
   flex: 1;
   display: flex;
@@ -110,6 +162,12 @@ main {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid var(--cinza);
+  border-radius: 6px;
+  background-color: var(--branco);
+  padding: 0.5rem;
 }
 
 .servicos-selecionados li {
@@ -119,6 +177,8 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 0.95rem;
+  color: var(--texto);
 }
 
 .servicos-selecionados li button {
@@ -127,8 +187,25 @@ main {
   color: red;
   font-size: 1.2rem;
   cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
 }
 
+.servicos-selecionados li button:hover {
+  color: darkred;
+}
+
+/* Totais na área de agendamento */
+.totais-agendamento {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--cor-principal);
+  padding: 0 0.3rem;
+}
+
+/* Botão agendar */
 .btn-agendar {
   padding: 1rem;
   background-color: var(--cor-principal);
@@ -151,11 +228,12 @@ main {
 }
 
 .msg-erro {
-  display: none;
+  display: block;
   margin-top: 0.5rem;
   color: #d93025;
   font-weight: 600;
   font-size: 0.9rem;
+  min-height: 1.2em;
 }
 
 /* FOOTER */
@@ -232,37 +310,6 @@ footer {
   display: none !important;
 }
 
-/* Página de subserviços */
-.subservico-card {
-  display: flex;
-  gap: 0.5rem;
-  background-color: var(--branco);
-  border: 1px solid var(--cinza);
-  border-radius: 6px;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  align-items: center;
-  position: relative;
-}
-
-.subservico-card img {
-  width: 60px;
-  height: 60px;
-  border-radius: 6px;
-  object-fit: cover;
-  cursor: pointer;
-}
-
-.subservico-desc {
-  flex: 1;
-  cursor: pointer;
-}
-
-.subservico-desc strong {
-  display: block;
-  font-weight: 600;
-}
-
 /* Botão voltar */
 .btn-voltar {
   background: none;
@@ -286,10 +333,38 @@ footer {
   z-index: 20;
 }
 
+#modal-imagem:not(.hidden) {
+  display: flex;
+}
+
 #modal-imagem img {
   max-width: 90%;
   max-height: 90%;
   border-radius: 8px;
   box-shadow: 0 0 20px #000;
   cursor: pointer;
+}
+
+/* Botão fechar modal */
+.btn-fechar-modal {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background: rgba(255,255,255,0.8);
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  line-height: 30px;
+  text-align: center;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  user-select: none;
+  z-index: 21;
+}
+
+.btn-fechar-modal:hover {
+  background: rgba(255,255,255,1);
 }
