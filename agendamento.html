@@ -1,30 +1,74 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Agendar Serviços</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <header>
-      <h1>Escolha seus serviços</h1>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Finalizar Agendamento</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Finalize seu agendamento</h1>
+  </header>
 
-    <main>
-      <section id="lista-servicos">
-        <!-- Os cards de serviços serão adicionados aqui pelo script.js -->
-      </section>
+  <main>
+    <section id="lista-servicos">
+      <!-- Serviços selecionados aparecerão aqui pelo JS -->
+    </section>
 
-      <section id="resumo-selecionados">
-        <h2>Serviços Selecionados</h2>
-        <ul id="servicos-selecionados"></ul>
-        <p><strong>Total:</strong> R$ <span id="total-preco">0,00</span></p>
-        <p><strong>Duração Total:</strong> <span id="total-duracao">0</span> minutos</p>
-        <button id="btn-agendar">Agendar</button>
-      </section>
-    </main>
+    <section id="resumo-selecionados">
+      <h2>Serviços Selecionados</h2>
+      <ul id="servicos-selecionados"></ul>
+      <p><strong>Total:</strong> R$ <span id="total-preco">0,00</span></p>
+      <p><strong>Duração Total:</strong> <span id="total-duracao">0</span> minutos</p>
+    </section>
 
-    <script src="script.js"></script>
-  </body>
+    <form id="form-agendamento">
+      <label for="calendario" class="required">Escolha o dia:</label>
+      <input type="date" id="calendario" required />
+
+      <label for="horario" class="required">Escolha o horário:</label>
+      <select id="horario" required disabled>
+        <option>Escolha uma data primeiro</option>
+      </select>
+
+      <label for="nome" class="required">Nome completo:</label>
+      <input type="text" id="nome" placeholder="Seu nome" required />
+
+      <label for="telefone" class="required">Telefone:</label>
+      <input type="tel" id="telefone" placeholder="(00) 00000-0000" required />
+
+      <label for="email">E-mail (opcional):</label>
+      <input type="email" id="email" placeholder="exemplo@email.com" />
+
+      <fieldset class="forma-pagamento" required>
+        <legend class="required">Forma de pagamento:</legend>
+
+        <label class="radio-linha">
+          <input type="radio" name="pagamento" value="Dinheiro" required />
+          Dinheiro
+        </label>
+
+        <label class="radio-linha">
+          <input type="radio" name="pagamento" value="PIX" />
+          PIX
+        </label>
+
+        <label class="radio-linha">
+          <input type="radio" name="pagamento" value="Cartão Débito" />
+          Cartão Débito
+        </label>
+
+        <label class="radio-linha">
+          <input type="radio" name="pagamento" value="Cartão Crédito" />
+          Cartão Crédito
+        </label>
+      </fieldset>
+
+      <button id="btn-agendar" type="submit">Agendar</button>
+    </form>
+  </main>
+
+  <script src="agendamento.js" type="module"></script>
+</body>
 </html>
