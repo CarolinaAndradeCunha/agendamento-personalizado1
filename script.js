@@ -28,6 +28,7 @@ const msgErro = document.getElementById('msg-erro');
 // Armazena os serviços selecionados
 let selecionados = [];
 
+// Mostrar subserviços da categoria clicada
 function mostrarSubservicos(categoria) {
   listaSubservicos.innerHTML = '';
   subservicos[categoria].forEach(servico => {
@@ -41,19 +42,20 @@ function mostrarSubservicos(categoria) {
   subservicosSection.classList.remove('hidden');
 }
 
+// Adicionar serviço selecionado, evitando duplicata
 function adicionarServico(servico) {
-  // Verifica se já foi adicionado
   if (selecionados.find(s => s.nome === servico.nome)) return;
-
   selecionados.push(servico);
   atualizarLista();
 }
 
+// Remover serviço da lista selecionada
 function removerServico(nome) {
   selecionados = selecionados.filter(s => s.nome !== nome);
   atualizarLista();
 }
 
+// Atualiza a lista de serviços selecionados na tela
 function atualizarLista() {
   listaAgendados.innerHTML = '';
   selecionados.forEach(servico => {
@@ -68,6 +70,7 @@ function atualizarLista() {
   });
 }
 
+// Salva no localStorage e redireciona para a página do agendamento
 function salvarServicosSelecionados() {
   if (selecionados.length === 0) {
     msgErro.textContent = 'Selecione pelo menos um serviço para agendar.';
@@ -83,8 +86,8 @@ function salvarServicosSelecionados() {
   localStorage.setItem('totalPreco', totalPreco);
   localStorage.setItem('totalDuracao', totalDuracao);
 
-  // Ir para próxima página (você pode trocar o link aqui depois)
-  window.location.href = "etapa2.html";
+  // Redireciona para a página do agendamento (ajuste o nome do arquivo se precisar)
+  window.location.href = "agendamento.html";
 }
 
 // Eventos
